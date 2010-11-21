@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<!DOCTYPE boost_serialization>
+<boost_serialization signature="serialization::archive" version="5">
+<FlanMap class_id="0" tracking_level="0" version="3">
+	<spriteTypeList class_id="1" tracking_level="0" version="0">
+		<types class_id="2" tracking_level="0" version="0">
+			<count>0</count>
+			<item_version>0</item_version>
+		</types>
+	</spriteTypeList>
+	<map class_id="3" tracking_level="0" version="1">
+		<name>New map</name>
+		<baseWidth>20</baseWidth>
+		<baseHeight>10</baseHeight>
+		<baseTileset class_id="4" tracking_level="0" version="0">
+			<path></path>
+		</baseTileset>
+		<bgColor.r>255</bgColor.r>
+		<bgColor.g>255</bgColor.g>
+		<bgColor.b>255</bgColor.b>
+		<screenPxWidth>320</screenPxWidth>
+		<screenPxHeight>240</screenPxHeight>
+	</map>
+	<layerList class_id="5" tracking_level="0" version="1">
+		<layers class_id="6" tracking_level="0" version="0">
+			<count>0</count>
+			<item_version>0</item_version>
+		</layers>
+	</layerList>
+	<importExport class_id="7" tracking_level="0" version="1">
+		<csvDirPath>
+			<path></path>
+		</csvDirPath>
+		<as3DirPath>
+			<path></path>
+		</as3DirPath>
+		<package></package>
+		<useBaseClass>1</useBaseClass>
+		<baseClassName>MapBase</baseClassName>
+		<csvFilenameFormat></csvFilenameFormat>
+		<as3FilenameFormat></as3FilenameFormat>
+	</importExport>
+	<customCode></customCode>
+	<customValues class_id="8" tracking_level="0" version="0">
+		<count>0</count>
+		<item_version>0</item_version>
+	</customValues>
+	<uidCounter>1</uidCounter>
+</FlanMap>
+</boost_serialization>
+
