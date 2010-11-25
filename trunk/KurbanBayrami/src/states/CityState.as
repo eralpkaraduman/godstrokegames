@@ -1,6 +1,7 @@
 package states 
 {
 	import actors.Haci;
+	import actors.Koyun;
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -26,6 +27,8 @@ package states
 		override public function create():void {
 			loadTMX();
 			super.create();
+			
+			
 		}
 		
 		override public function update():void {
