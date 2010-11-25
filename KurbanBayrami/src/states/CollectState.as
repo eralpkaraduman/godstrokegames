@@ -1,13 +1,16 @@
 package states 
 {
 	import actors.Haci;
+	import actors.Koyun;
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import net.pixelpracht.tmx.TmxMap;
 	import org.flixel.FlxG;
+	import org.flixel.FlxGroup;
 	import org.flixel.FlxState;
 	import org.flixel.FlxTilemap;
+	import org.flixel.FlxU;
 	
 	/**
 	$(CBI)* ...
@@ -18,16 +21,47 @@ package states
 		
 		[Embed(source = "../../gfx/kurban_bayrami_tiles.png")] private var gfx_tilemap:Class;
 		private var haci:Haci;
+		private var tilemap:FlxTilemap;
+		private var kurbanliklar:FlxGroup;
 		
 		override public function create():void
 		{
+			kurbanliklar = new FlxGroup();
 			loadTMX();
+			
+			// testkoyun
+			var koyun:Koyun = new Koyun();
+			var koyun1:Koyun = new Koyun();
+			var koyun2:Koyun = new Koyun();
+			var koyun3:Koyun = new Koyun();
+			koyun.x = 15;
+			koyun.y = 15;
+			kurbanliklar.add(koyun);
+			
+			koyun1.x = 165;
+			koyun1.y = -15;
+			kurbanliklar.add(koyun1);
+			
+			koyun2.x = 165;
+			koyun2.y = -45;
+			kurbanliklar.add(koyun2);
+			
+			koyun3.x = 200;
+			koyun3.y = 15;
+			kurbanliklar.add(koyun3);
+			
+			//koyun.canMove = false;
+			add(kurbanliklar);
+			
 			super.create();
 		}
 		
 		override public function update():void {
 			super.update();
-			collide();
+			FlxU.collide(haci,kurbanliklar);
+			FlxU.collide(kurbanliklar,tilemap);
+			FlxU.collide(haci, tilemap);
+			
 		}
 		
 		//******** MAP GENERATION *********//
@@ -50,7 +84,7 @@ package states
 			FlxState.bgColor = 0xffacbcd7;
 			
 			//level
-			var tilemap:FlxTilemap = new FlxTilemap();
+			tilemap = new FlxTilemap();
 			var mapCSV:String = tmx.getLayer('map').toCsv(tmx.getTileSet('generic'));
 			tilemap.loadMap(mapCSV, gfx_tilemap);
 			add(tilemap);

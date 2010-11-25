@@ -4,6 +4,7 @@ package
 	import flash.events.Event;
 	import org.flixel.FlxGame;
 	import states.CityState;
+	import states.CollectState;
 	import states.IntroState;
 	
 	
@@ -19,7 +20,8 @@ package
 		public function KurbanBayrami():void 
 		{
 			//60 20
-			super(60*6, 20*6,CityState,2);
+			//super(60*6, 20*6,CityState,2);
+			super(60*6, 20*6,CollectState,2);
 		}
 		
 	}
