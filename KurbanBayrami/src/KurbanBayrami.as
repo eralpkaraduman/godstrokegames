@@ -2,6 +2,7 @@ package
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import org.flixel.FlxG;
 	import org.flixel.FlxGame;
 	import states.CityState;
 	import states.CollectState;
@@ -21,6 +22,7 @@ package
 		{
 			//60 20
 			//super(60*6, 20*6,CityState,2);
+			
 			super(60*6, 20*6,CollectState,2);
 		}
 		

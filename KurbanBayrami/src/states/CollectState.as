@@ -2,12 +2,14 @@ package states
 {
 	import actors.Haci;
 	import actors.Koyun;
+	import actors.Kurbanlik;
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import net.pixelpracht.tmx.TmxMap;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxObject;
 	import org.flixel.FlxState;
 	import org.flixel.FlxTilemap;
 	import org.flixel.FlxU;
@@ -53,15 +55,27 @@ package states
 			//koyun.canMove = false;
 			add(kurbanliklar);
 			
+			
 			super.create();
 		}
 		
 		override public function update():void {
-			super.update();
-			FlxU.collide(haci,kurbanliklar);
+			
+			FlxU.overlap(haci,kurbanliklar,overlap_haci_kurbanlik);
 			FlxU.collide(kurbanliklar,tilemap);
 			FlxU.collide(haci, tilemap);
 			
+			//collide();
+			super.update();
+			
+		}
+		
+		private function overlap_haci_kurbanlik(o1:FlxObject,o2:FlxObject):void
+		{
+			if (FlxG.keys.C && haci.caughtSomething == null) {
+				Kurbanlik(o2).caught(haci);
+				//trace(o2);
+			}
 		}
 		
 		//******** MAP GENERATION *********//

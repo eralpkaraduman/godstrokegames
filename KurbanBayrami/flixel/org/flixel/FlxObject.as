@@ -1,5 +1,6 @@
 package org.flixel
 {
+	import actors.Haci;
 	import flash.geom.Point;
 	
 	/**
