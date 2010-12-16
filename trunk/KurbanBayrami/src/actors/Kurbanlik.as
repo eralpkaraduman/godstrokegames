@@ -1,5 +1,6 @@
 package actors 
 {
+	import actors.Haci;
 	import flash.geom.Point;
 	import org.flixel.FlxG;
 	import org.flixel.FlxSprite;
@@ -10,12 +11,15 @@ package actors
 	$(CBI)*/
 	public class Kurbanlik extends FlxSprite 
 	{
+		private var stuckCounter:Number = 0;
+		private var isCaught:Boolean = false;
+		private var _haci:Haci;
 		public var canMove:Boolean = true;
-		private var activeTimerLimit:Number = 4;
-		private var activeTimer:Number = 0;
-		protected var resting:Boolean = false;
-		protected var restTimer:Number = 0;
-		protected var restTimerLimit:Number = 2;
+		//private var activeTimerLimit:Number = 4;
+		//private var activeTimer:Number = 0;
+		//protected var resting:Boolean = false;
+		//protected var restTimer:Number = 0;
+		//protected var restTimerLimit:Number = 2;
 		protected var canJump:Boolean; //see: create()
 		protected var movingLeft:Boolean; //see: create()
 		
@@ -40,13 +44,24 @@ package actors
 			return Math.round(Math.random() * 1) == 0 ? true : false;
 		}
 		
-		
+		//override public function 
 		
 		override public function update():void {
 			acceleration.x = 0;
 			
 			if (!canMove) {
 				super.update();
+				return;
+			}
+			
+			if (isCaught) {
+				//dead = true;
+				super.update();
+				
+				this.x = _haci.x;
+				this.y = _haci.y - _haci.height/2;
+				
+				
 				return;
 			}
 			
@@ -58,23 +73,7 @@ package actors
 				movingLeft = true;
 			}
 			
-			
-			
-			restTimerLimit = (2 + Math.random() * 2); // time to spend on resting
-			if (restTimer > restTimerLimit) { 
-				restTimer = 0;
-				restTimer += FlxG.elapsed;
-				activeTimer = 0;
-				super.update();
-				return; // <-- do you see this? This is a fucking RETURN STATEMENT
-			}else {
-				activeTimerLimit = (2 + Math.random() * 4);
-				activeTimer += FlxG.elapsed;
-				restTimer = 0;
-			}
-			
-			
-			
+			// MOVE MOVE.. GET TO THA CHOPPA
 			if (movingLeft) { //L
 				acceleration.x -= drag.x;
 				facing = RIGHT;
@@ -92,40 +91,59 @@ package actors
 				}
 			}
 			
+			
+			super.update(); // is stuck sorgulanmadan önce, update etmek lazım ki, yeni yerine gitsin
+			
+			// "abi kurtar kendini" algoritması
 			if (isStuck()) {
-				//choose
-				if (trueOrFalse()) { //walk
+				
+				
+				if (stuckCounter > 10) {
+					stuckCounter = 0;
+				}else {
+					stuckCounter++;
+					return;
+				}
+				
+				
+				if (Math.random()*10>=3) { //walk // %30 ithimalle zıplar, yoksa öbür yöne yürür
 					movingLeft = !movingLeft;
 				}else { // jump
 					canJump = true;
 				}
 			}
 			
-			if (activeTimer > activeTimerLimit) {
-				resting = true;
-			}
+		}
+		
+		public function caught(haci:Haci):void
+		{
+			if (isCaught) return;
 			
-			super.update();
-			
-			
+			_haci = haci;
+			_haci.caughtSomething = this;
+			//this.dead = true;
+			isCaught = true;
 		}
 		
 		protected function isStuck():Boolean
 		{
-			if (lastPosition.x != this.x || lastPosition.y != this.y) {
-				
-				lastPosition.x = this.x;
-				lastPosition.y = this.y;
-				return false;
-				
-				
+			var ret:Boolean;
+			if (lastPosition.x != this.x && lastPosition.y != this.y) {
+			//if (Math.abs(lastPosition.x - this.x)< && lastPosition.y != this.y) {
+			//if (lastPosition.x != this.x) {
+				ret = false;
 			}else {
-				
-				lastPosition.x = this.x;
-				lastPosition.y = this.y;
-				return true;
+				ret = true;
 			}
+			
+			lastPosition.x = this.x;
+			lastPosition.y = this.y;
+			
+			return ret;
 		}
+		
+		
+		
 		
 	}
 

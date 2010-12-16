@@ -1,6 +1,7 @@
 package actors 
 {
 	import org.flixel.FlxG;
+	import org.flixel.FlxObject;
 	import org.flixel.FlxSprite;
 	
 	/**
@@ -10,6 +11,8 @@ package actors
 	public class Haci extends FlxSprite 
 	{
 		[Embed(source="../../gfx/haci.png")] private var gfx_haci:Class;
+		
+		public var caughtSomething:FlxObject = null;
 		
 		public function Haci(X:Number, Y:Number)
 		{
@@ -49,6 +52,7 @@ package actors
 				// play fall
 			}
 			
+			super.update();
 			
 			if (!onScreen()) {
 				if (this.x > FlxG.width) {
@@ -60,7 +64,7 @@ package actors
 				}
 			}
 			
-			super.update();
+			
 			
 			
 		}

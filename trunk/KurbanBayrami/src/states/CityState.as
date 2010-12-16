@@ -32,9 +32,10 @@ package states
 		}
 		
 		override public function update():void {
+			collide();
 			super.update();
 			
-			collide();
+			
 		}
 		
 		//******** MAP GENERATION *********//
