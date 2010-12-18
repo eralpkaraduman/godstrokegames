@@ -6,6 +6,7 @@ package
 	import org.flixel.FlxGame;
 	import states.CityState;
 	import states.CollectState;
+	import states.KillStage;
 	import states.IntroState;
 	
 	
@@ -23,7 +24,8 @@ package
 			//60 20
 			//super(60*6, 20*6,CityState,2);
 			
-			super(60*6, 20*6,CollectState,2);
+			//super(60*6, 20*6,CollectState,2);
+			super(60*6, 20*6,KillStage,2);
 		}
 		
 	}

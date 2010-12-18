@@ -13,18 +13,26 @@ package actors
 		[Embed(source="../../gfx/haci.png")] private var gfx_haci:Class;
 		
 		public var caughtSomething:FlxObject = null;
+		private var _canClimb:Boolean = false;
+		private var climbSpeed:Number = 0.5;
 		
 		public function Haci(X:Number, Y:Number)
 		{
 			super(X, Y);
 			loadGraphic(gfx_haci, false, true, 8, 12);
+			height = 12;
+			width = 8;
+			
 			maxVelocity.x = 50;
+			//maxVelocity.y = 400;
 			acceleration.y = 300;
-			drag.x = maxVelocity.x*4; // deceleration - sliding to a stop
+			drag.x = maxVelocity.x * 4; // deceleration - sliding to a stop
+			//drag.y = maxVelocity.y * 4;
 		}
 		
 		override public function update():void {
 			acceleration.x = 0;
+			//acceleration.y = 0;
 			
 			if (FlxG.keys.LEFT) {
 				acceleration.x -= drag.x;
@@ -34,7 +42,15 @@ package actors
 				acceleration.x += drag.x;
 				facing = RIGHT;
 			}
-			
+			// ladder& climb
+			if (FlxG.keys.UP && canClimb) {
+				//facing = UP;
+				y -= climbSpeed;
+			}
+			if (FlxG.keys.DOWN && canClimb) {
+				//facing = UP;
+				y += climbSpeed;
+			}
 			
 			if (onFloor) 
 			{
@@ -72,6 +88,19 @@ package actors
 			
 			
 			
+		}
+		
+		public function get canClimb():Boolean { return _canClimb; }
+		
+		public function set canClimb(value:Boolean):void 
+		{
+			if (value) {
+				acceleration.y = 0;
+				velocity.y = 0;
+			}else {
+				acceleration.y = 300;
+			}
+			_canClimb = value;
 		}
 		
 		

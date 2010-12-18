@@ -16,6 +16,7 @@ package actors
 		private var _haci:Haci;
 		private var _justReleased:Boolean = false;;
 		public var canMove:Boolean = true;
+		public var markCollected:Boolean = false; // arefe bitince kesilecekler listesindemi.
 		//private var activeTimerLimit:Number = 4;
 		//private var activeTimer:Number = 0;
 		//protected var resting:Boolean = false;

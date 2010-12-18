@@ -60,7 +60,11 @@ package states
 			//
 			FlxU.overlap(haci, kurbanlikGroup,overlap_haci_kurbanlik);
 			
-			
+			if (FlxG.keys.justReleased("C")) {
+				if (haci.caughtSomething) {
+					Kurbanlik(haci.caughtSomething).released(haci);
+				}
+			}
 			
 			super.update();
 			
@@ -138,7 +142,10 @@ package states
 				//kurban.x = FlxG.width / 2;
 				//kurban.y = FlxG.height / 2;
 				//kurban.dead = false;
-				kurban.caught(haci)
+				kurban.caught(haci);
+				kurban.x = haci.x;
+				kurban.y = haci.y;
+				kurban.released(haci);
 				//kurban.canMove = false;
 				kurbanlikGroup.add(kurban);
 				
@@ -174,7 +181,7 @@ package states
 				FlxG.state = new CollectState();
 				return;
 			}else {
-				FlxG.state = new KillStage();
+				FlxG.state = new KillStage(_haciHasKurbanlik);
 				return;
 			}
 		}
