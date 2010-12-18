@@ -14,6 +14,7 @@ package actors
 		private var stuckCounter:Number = 0;
 		private var isCaught:Boolean = false;
 		private var _haci:Haci;
+		private var _justReleased:Boolean = false;;
 		public var canMove:Boolean = true;
 		//private var activeTimerLimit:Number = 4;
 		//private var activeTimer:Number = 0;
@@ -65,6 +66,8 @@ package actors
 				return;
 			}
 			
+			
+			
 			var TurnBackLimits:Number = 25;
 			if (this.x < 0 + TurnBackLimits) {
 				movingLeft = false;
@@ -74,7 +77,17 @@ package actors
 			}
 			
 			// MOVE MOVE.. GET TO THA CHOPPA
-			if (movingLeft) { //L
+			if (_justReleased) {
+				
+				facing = (movingLeft)? RIGHT : LEFT;
+				velocity.y = -acceleration.y * 0.21;
+				velocity.x = -acceleration.x * 0.21;
+				
+				
+				
+				_justReleased = false;
+				
+			}else if (movingLeft) { //L
 				acceleration.x -= drag.x;
 				facing = RIGHT;
 			}else { //R
@@ -82,6 +95,8 @@ package actors
 				
 				facing = LEFT;
 			}
+			
+			
 			
 			if (onFloor) {
 				if (canJump) {
@@ -123,6 +138,21 @@ package actors
 			_haci.caughtSomething = this;
 			//this.dead = true;
 			isCaught = true;
+		}
+		
+		public function released(haci:Haci):void
+		{
+			if (!isCaught) return;
+			
+			_haci = haci;
+			_haci.caughtSomething = null;
+			isCaught = false;
+			
+			//canJump = true;
+			movingLeft = (_haci.facing == LEFT)? true : false;
+			_justReleased = true;
+			
+			//acceleration = haci.acceleration;
 		}
 		
 		protected function isStuck():Boolean

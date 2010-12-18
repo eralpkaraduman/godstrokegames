@@ -14,6 +14,11 @@ package actors
 			create();
 		}
 		
+		override public function toString():String {
+			return "actors.Koyun";
+		}
+		
+		
 	}
 
 }
