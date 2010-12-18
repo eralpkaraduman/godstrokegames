@@ -53,7 +53,7 @@ package states
 			kurbanliklar.add(koyun3);
 			
 			//koyun.canMove = false;
-			add(kurbanliklar);
+			
 			
 			
 			super.create();
@@ -64,6 +64,12 @@ package states
 			FlxU.overlap(haci,kurbanliklar,overlap_haci_kurbanlik);
 			FlxU.collide(kurbanliklar,tilemap);
 			FlxU.collide(haci, tilemap);
+			
+			if (FlxG.keys.justReleased("C")) {
+				if (haci.caughtSomething) {
+					Kurbanlik(haci.caughtSomething).released(haci);
+				}
+			}
 			
 			//collide();
 			super.update();
@@ -102,6 +108,7 @@ package states
 			var mapCSV:String = tmx.getLayer('map').toCsv(tmx.getTileSet('generic'));
 			tilemap.loadMap(mapCSV, gfx_tilemap);
 			add(tilemap);
+			add(kurbanliklar);
 			mapReady();
 		}
 		//******** [X] MAP GENERATION *********//
@@ -114,9 +121,12 @@ package states
 		}
 		
 		public function haciLeftTheMap(fromRight:Boolean):void {
+			
 			if (!fromRight) {
-				FlxG.state = new CityState();
+				FlxG.state = new CityState(false,haci.caughtSomething);
 			}
+			
+			
 		}
 	}
 

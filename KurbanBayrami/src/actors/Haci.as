@@ -28,10 +28,13 @@ package actors
 			
 			if (FlxG.keys.LEFT) {
 				acceleration.x -= drag.x;
+				facing = LEFT;
 			}
 			if (FlxG.keys.RIGHT) {
 				acceleration.x += drag.x;
+				facing = RIGHT;
 			}
+			
 			
 			if (onFloor) 
 			{
@@ -51,6 +54,8 @@ package actors
 			}else {
 				// play fall
 			}
+			
+			
 			
 			super.update();
 			

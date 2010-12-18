@@ -1207,4 +1207,8 @@
    <tile gid="24"/>
   </data>
  </layer>
+ <objectgroup name="objects" width="60" height="20" opacity="0.48">
+  <object name="HaciSpawnLeft" type="SpawnPoint" x="9" y="102"/>
+  <object name="HaciSpawnRight" type="SpawnPoint" x="351" y="102"/>
+ </objectgroup>
 </map>
