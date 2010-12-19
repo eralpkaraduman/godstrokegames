@@ -83,9 +83,6 @@ package actors
 				facing = (movingLeft)? RIGHT : LEFT;
 				velocity.y = -acceleration.y * 0.21;
 				velocity.x = -acceleration.x * 0.21;
-				
-				
-				
 				_justReleased = false;
 				
 			}else if (movingLeft) { //L
@@ -93,11 +90,8 @@ package actors
 				facing = RIGHT;
 			}else { //R
 				acceleration.x += drag.x;
-				
 				facing = LEFT;
 			}
-			
-			
 			
 			if (onFloor) {
 				if (canJump) {
@@ -106,7 +100,6 @@ package actors
 					canJump = false;
 				}
 			}
-			
 			
 			super.update(); // is stuck sorgulanmadan önce, update etmek lazım ki, yeni yerine gitsin
 			
