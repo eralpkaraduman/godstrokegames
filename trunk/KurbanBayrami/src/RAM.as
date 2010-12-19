@@ -1,5 +1,6 @@
 package  
 {
+	import actors.Koyun;
 	import actors.Kurbanlik;
 	/**
 	$(CBI)* ...
@@ -16,7 +17,11 @@ package
 			trace("added! population :", _sacrificables.length);
 		}
 		
-		static public function get sacrificables():Vector.<Kurbanlik> { return _sacrificables; }
+		static public function get sacrificables():Vector.<Kurbanlik> {
+			if (!_sacrificables) _sacrificables = new Vector.<Kurbanlik>();
+			//
+			return _sacrificables; 
+		}
 		
 		
 		

@@ -3,6 +3,7 @@ package states
 	import actors.Haci;
 	import actors.Kurbanlik;
 	import flash.events.Event;
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -34,6 +35,7 @@ package states
 		private var uncollidingMap:FlxTilemap;
 		private var ladderPosRect:Rectangle;
 		private var dropZoneRect:Rectangle;
+		private var spawnZoneRect:Rectangle;
 		
 		public function KillStage(haciBringsKurbanlik:FlxObject=null) 
 		{
@@ -53,6 +55,7 @@ package states
 			
 			FlxU.collide(haci, tilemap);
 			FlxU.collide(kurbanlikGroup, tilemap);
+			FlxU.collide(kurbanlikGroup, kurbanlikGroup);
 			
 			if (FlxG.keys.justReleased("C")) {
 				if (haci.caughtSomething) {
@@ -147,6 +150,8 @@ package states
 			ladderPosRect = new Rectangle(o.x, o.y, o.width, o.height);
 			o = getTMXObjectByName("DropZone", objectGroup);
 			dropZoneRect = new Rectangle(o.x, o.y, o.width, o.height);
+			o = getTMXObjectByName("SpawnZone", objectGroup);
+			spawnZoneRect = new Rectangle(o.x, o.y, o.width, o.height);
 			/*
 			var fs:FlxSprite = new FlxSprite(o.x, o.y,null);
 			add(fs);
@@ -176,6 +181,8 @@ package states
 			haci = new Haci(354,10);
 			add(haci);
 			
+			addExistingSacficables();
+			
 			if (_haciBringsKurbanlik) {
 				var kurbanType:String = String(_haciBringsKurbanlik);
 				
@@ -189,10 +196,35 @@ package states
 			}
 		}
 		
+		private function addExistingSacficables():void
+		{
+			for each(var k:Kurbanlik in RAM.sacrificables) {
+				
+				var kurbanType:String = String(k);
+				var kurbanClass:Class = Class(getDefinitionByName(kurbanType));
+				var kurban:Kurbanlik = new kurbanClass() as Kurbanlik;
+				kurban.markCollected = true; // prevent recounting
+				//kurban.caught(haci);
+				kurban.x = randomPointInRect(spawnZoneRect).x;
+				kurban.y = randomPointInRect(spawnZoneRect).y;
+				//kurban.released(haci);
+				kurbanlikGroup.add(kurban);
+			}
+		}
+		
 		public function haciLeftTheMap(fromRight:Boolean):void {
 			if (fromRight) {
 				FlxG.state = new CityState();
 			}
+		}
+		
+		private function randomPointInRect(r:Rectangle):Point {
+			var p:Point = new Point();
+			
+			p.x = (Math.random() * r.width) + r.x;
+			p.y = (Math.random() * r.height) + r.y;
+			
+			return p;
 		}
 		
 	}
