@@ -2414,5 +2414,6 @@
  <objectgroup name="objects" width="60" height="20">
   <object name="Ladder" type="tools" x="338" y="33" height="75"/>
   <object name="DropZone" type="tool" x="2" y="61" width="357" height="56"/>
+  <object name="SpawnZone" type="tool" x="89" y="15" width="157" height="36"/>
  </objectgroup>
 </map>
