@@ -35,6 +35,7 @@ package states
 		// collision / overlaping lists 
 		private var kurbanlikGroup:FlxGroup = new FlxGroup();
 		private var enemyGroup:FlxGroup = new FlxGroup();
+		private var mapColliders:FlxGroup = new FlxGroup();
 		
 		public function CityState(fromleft:Boolean=true,haciHasKurbanlik:FlxObject=null) 
 		{
@@ -49,31 +50,30 @@ package states
 			super.create();
 			
 			
+			
 		}
 		
 		override public function update():void {
 			//collide();
 			
+			/*
 			FlxU.collide(haci, tilemap);
 			FlxU.collide(kurbanlikGroup, tilemap);
 			FlxU.collide(enemyGroup, tilemap);
-			//
+			*/
+			FlxU.collide(mapColliders, tilemap);
+			
 			FlxU.overlap(haci, kurbanlikGroup,overlap_haci_kurbanlik);
 			
-			if (FlxG.keys.justReleased("C")) {
-				if (haci.caughtSomething) {
-					Kurbanlik(haci.caughtSomething).released(haci);
-				}
+			if (FlxG.keys.justReleased("C") && haci.caughtSomething) {
+				Kurbanlik(haci.caughtSomething).released(haci);
 			}
 			
 			super.update();
-			
-			
 		}
 		
 		private function overlap_haci_kurbanlik(o1:FlxObject,o2:FlxObject):void
 		{
-			
 			if (FlxG.keys.C && haci.caughtSomething == null) {
 				Kurbanlik(o2).caught(haci);
 				//trace(o2);
@@ -97,8 +97,6 @@ package states
 		
 		private function loadStateFromTMX(tmx:TmxMap):void
 		{
-			
-			
 			FlxState.bgColor = 0xffacbcd7;
 			
 			//level
@@ -111,9 +109,6 @@ package states
 			tilemap.loadMap(mapCSV, gfx_tilemap);
 			add(tilemap);
 			
-			add(kurbanlikGroup);
-			add(enemyGroup);
-			
 			mapReady();
 		}
 		//******** [X] MAP GENERATION *********//
@@ -121,6 +116,9 @@ package states
 		
 		private function mapReady():void
 		{
+			
+			//FlxG.keys.update();
+			
 			// make hacı
 			if (_fromleft) {
 				haci = new Haci(HaciSpawnLeftPoint.x,HaciSpawnLeftPoint.y);
@@ -129,7 +127,16 @@ package states
 			}
 			//trace("_haciHasKurbanlik",_haciHasKurbanlik);
 			
-			add(haci);
+			
+			//add(kurbanlikGroup);
+			//add(enemyGroup);
+			//add(haci);
+			
+			mapColliders.add(kurbanlikGroup);
+			mapColliders.add(enemyGroup);
+			mapColliders.add(haci);
+			
+			add(mapColliders);
 			
 			if (_haciHasKurbanlik) 
 			{
@@ -145,7 +152,7 @@ package states
 				kurban.caught(haci);
 				kurban.x = haci.x;
 				kurban.y = haci.y;
-				kurban.released(haci);
+				//kurban.released(haci);
 				//kurban.canMove = false;
 				kurbanlikGroup.add(kurban);
 				

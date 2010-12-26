@@ -61,6 +61,8 @@ package states
 		
 		override public function update():void {
 			
+			super.update();
+			
 			FlxU.overlap(haci,kurbanliklar,overlap_haci_kurbanlik);
 			FlxU.collide(kurbanliklar,tilemap);
 			FlxU.collide(haci, tilemap);
@@ -72,7 +74,7 @@ package states
 			}
 			
 			//collide();
-			super.update();
+			
 			
 		}
 		
