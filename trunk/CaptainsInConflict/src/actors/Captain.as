@@ -27,7 +27,8 @@ package actors
 			width = 54;
 			height = 90;
 			addAnimation("idle", [0], 12, false);
-			addAnimation("walk", [1, 2, 3, 4, 5, 6, 7, 8], 12, true);
+			//addAnimation("walk", [1, 2, 3, 4, 5, 6, 7, 8], 12, true);
+			addAnimation("walk", [1, 8, 7, 6, 5, 4, 3, 2], 12, true);
 			
 		}
 		
