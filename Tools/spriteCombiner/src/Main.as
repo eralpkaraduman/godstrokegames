@@ -32,7 +32,7 @@ package
 		private var ff:FileFilter;
 		private var file:FileReference;
 		private var stackWidth:Number = 0;
-		private var spriteContents:Vector.<FrameSprite> = new Vector.<FrameSprite>();
+		//private var spriteContents:Vector.<FrameSprite> = new Vector.<FrameSprite>();
 		private var stackHeight:Number = 0;
 		private var btn_orderByFN:PushButton;
 		private var loadBtn:PushButton;
@@ -45,13 +45,12 @@ package
 		public var animationPreviews:Vector.<Window> = new Vector.<Window>();
 		
 		
-		public static var sprites:Vector.<FrameSprite>;
+		public static var sprites:Vector.<FrameSprite> = new Vector.<FrameSprite>();
 		
 		public function Main():void 
 		{
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);
-			sprites = spriteContents;
 			
 		}
 		
@@ -130,13 +129,13 @@ package
 		
 		private function onOrderByCurX(e:MouseEvent):void 
 		{
-			spriteContents.sort(fByCurX);
+			sprites.sort(fByCurX);
 			ordering();
 		}
 		
 		private function onOrderByFileName(e:MouseEvent):void 
 		{
-			spriteContents.sort(fByFileName);
+			sprites.sort(fByFileName);
 			ordering();
 			
 		}
@@ -161,14 +160,14 @@ package
 			var sizeRect:Rectangle = new Rectangle();
 			var fs:FrameSprite;
 			
-			for each(fs in spriteContents) {
+			for each(fs in sprites) {
 				if (fs.frameWidth > sizeRect.width) sizeRect.width = fs.frameWidth;
 				if (fs.frameHeight > sizeRect.height) sizeRect.height = fs.frameHeight;
 			}
 			
 			stackWidth = 0;
 			stackHeight = 0;
-			for each(fs in spriteContents) {
+			for each(fs in sprites) {
 				fs.x = stackWidth;
 				fs.y = stackHeight;
 				
@@ -255,7 +254,7 @@ package
 			stackWidth += 10;
 			stackHeight += 10;
 			spriteSheetDisplay.addChild(fs);
-			spriteContents.push(fs);
+			sprites.push(fs);
 		}
 		
 		

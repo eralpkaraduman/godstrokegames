@@ -16,7 +16,7 @@ package
 	$(CBI)*/
 	public class FrameSprite extends Sprite 
 	{
-		private var loader:Loader;
+		public var loader:Loader;
 		private var border:Shape;
 		private var redBorder:Shape;
 		private var dragging:Boolean = false;
