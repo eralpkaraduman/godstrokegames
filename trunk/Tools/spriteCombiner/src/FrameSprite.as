@@ -1,5 +1,6 @@
 package  
 {
+	import com.greensock.TweenMax;
 	import flash.display.Loader;
 	import flash.display.Shape;
 	import flash.display.Sprite;
@@ -17,6 +18,7 @@ package
 	{
 		private var loader:Loader;
 		private var border:Shape;
+		private var redBorder:Shape;
 		private var dragging:Boolean = false;
 		public function get fileName():String {
 			return fileNameTF.text;
@@ -31,6 +33,9 @@ package
 		{
 			border = new Shape();
 			border.visible = false;
+			redBorder = new Shape();
+			redBorder.alpha = 0;
+			
 			fileNameTF.selectable = false;
 			fileNameTF.autoSize = TextFieldAutoSize.LEFT;
 			fileNameTF.height = 10;
@@ -94,7 +99,11 @@ package
 			border.graphics.lineStyle(0, 0x000000, 1);
 			border.graphics.drawRect(0, 0, loader.width, loader.height);
 			
+			redBorder.graphics.lineStyle(0, 0xFF0000, 1);
+			redBorder.graphics.drawRect(0, 0, loader.width, loader.height);
+			
 			addChild(border);
+			addChild(redBorder);
 			
 			fileNameTF.y = - fileNameTF.height;
 		}
@@ -102,6 +111,13 @@ package
 		override public function toString():String {
 			
 			return "[FrameSprite : " + fileName + "]";
+		}
+		
+		public function highLightRed():void 
+		{
+			TweenMax.to(redBorder, 0, { alpha:1, onComplete:function() {
+				TweenMax.to(redBorder,0, { alpha:0, delay:.3 } );
+			}})
 		}
 		
 		public function get frameWidth():int {
