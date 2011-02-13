@@ -115,7 +115,7 @@ package
 		
 		public function highLightRed():void 
 		{
-			TweenMax.to(redBorder, 0, { alpha:1, onComplete:function() {
+			TweenMax.to(redBorder, 0, { alpha:1, onComplete:function():void {
 				TweenMax.to(redBorder,0, { alpha:0, delay:.3 } );
 			}})
 		}

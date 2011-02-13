@@ -14,11 +14,14 @@ package
 	import flash.events.MouseEvent;
 	import flash.events.ProgressEvent;
 	import flash.events.SecurityErrorEvent;
+	import flash.geom.Matrix;
 	import flash.geom.Rectangle;
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
 	import flash.net.FileReferenceList;
 	import com.greensock.TweenMax;
+	import flash.utils.ByteArray;
+	import net.kaourantin.PNGEnc;
 	
 	/**
 	$(CBI)* ...
@@ -40,6 +43,9 @@ package
 		private var btn_defineNewAnim:PushButton;
 		private var closedWinsCount:int = 0;
 		private var last_vr:int = 0;
+		private var btn_exportSheet:PushButton;
+		private var maxColumns:int = 5;
+		private var step_macColumns:NumericStepper;
 		
 		public var animations:Vector.<Vector.<FrameSprite>> = new Vector.<Vector.<FrameSprite>>();
 		public var animationPreviews:Vector.<Window> = new Vector.<Window>();
@@ -70,9 +76,15 @@ package
 			btn_orderByFN = new PushButton(state1, loadBtn.width+10, 0, "Order By Filename", onOrderByFileName);
 			btn_orderByCurX = new PushButton(state1, btn_orderByFN.x + btn_orderByFN.width+10, 0, "Order By Current X", onOrderByCurX);
 			btn_defineNewAnim = new PushButton(state1, btn_orderByCurX.x + btn_orderByCurX.width+10, 0, "Define New Animation", onDefineNewAnim);
+			btn_exportSheet = new PushButton(state1, btn_defineNewAnim.x + btn_defineNewAnim.width + 10, 0, "Export Sheet", onExportSheet);
+			step_macColumns = new NumericStepper(state1, btn_exportSheet.x + btn_exportSheet.width + 5, 0, onStepMaxCol);
+			step_macColumns.minimum = 1;
+			step_macColumns.step = 1;
 			btn_orderByFN.enabled = false;
 			btn_orderByCurX.enabled = false;
 			btn_defineNewAnim.enabled = false;
+			btn_exportSheet.enabled = false;
+			step_macColumns.enabled = false;
 			/*
 			var animsAccordeonWin:Window = new Window(state1, 400, 300, "Animations");
 			animsAccordeonWin.hasMinimizeButton = true;
@@ -89,6 +101,73 @@ package
 			state1.y = 20;
 			
 		}
+		
+		private function onStepMaxCol(e:Event):void 
+		{
+			maxColumns = int(step_macColumns.value);
+		}
+		
+		private function onExportSheet(e:MouseEvent):void 
+		{
+			var c_col:int = 0;
+			var c_col_max:int = 0;
+			var c_row:int = 0;
+			
+			//maxColumns = int(maxColumns);
+			trace("maxColumns", maxColumns);
+			
+			var i:int = 0;
+			for (; i < sprites.length ; i++ ) {
+				c_col++;
+				if (c_col >= maxColumns) {
+					c_col = 0;
+					c_row++;
+				}
+				
+				if (c_col > c_col_max) c_col_max = c_col;
+			}
+			c_col_max+=1;
+			c_row += 1;
+			
+			if (c_col_max >= sprites.length) {
+				c_col_max = sprites.length;
+				c_row = 1;
+			}
+			if (c_row >= sprites.length) {
+				c_row = sprites.length;
+				c_col_max = 1;
+			}
+			
+			//if (c_row == 0) c_row = 1;
+			
+			var transparent:Boolean = true;
+			var spriteBMPD:BitmapData = new BitmapData(sprites[0].loader.width*c_col_max, sprites[0].loader.height*c_row, transparent,0xFF0000);
+			spriteBMPD.lock();
+			c_col = 0;
+			c_row = 0;
+			trace("noerr");
+			
+			i = 0;
+			for (var i:int = 0 ; i < sprites.length ; i++ ) {
+				//spriteBMPD.se = new Rectangle(sprites[0].loader.width * (i), 0, sprites[0].loader.width * (i + 1), sprites[0].loader.height);
+				spriteBMPD.draw(sprites[i].loader.content,new Matrix(1,0,0,1,(sprites[0].loader.width * c_col),(sprites[0].loader.height * c_row)));
+				
+				c_col++;
+				if (c_col >= maxColumns) {
+					c_col = 0;
+					c_row++;
+				}
+				//spriteBMPD.scroll(sprites[0].loader.width, 0);
+			}
+			
+			var pngBA:ByteArray = PNGEnc.encode(spriteBMPD);
+			var fileRef:FileReference = new FileReference();
+			fileRef.save(pngBA, "spriteSheet.png");
+			spriteBMPD.dispose();
+			
+			//var temp_bmp:Bitmap = new Bitmap(spriteBMPD);
+			//addChild(temp_bmp);
+		}	
 		
 		private function onDefineNewAnim(e:MouseEvent):void 
 		{
@@ -207,6 +286,8 @@ package
 			btn_orderByFN.enabled = true;
 			btn_orderByCurX.enabled = true;
 			btn_defineNewAnim.enabled = true;
+			btn_exportSheet.enabled = true;
+			step_macColumns.enabled = true;
 			
 			//trace("sel");
 			for each(file in files.fileList) {
@@ -255,6 +336,10 @@ package
 			stackHeight += 10;
 			spriteSheetDisplay.addChild(fs);
 			sprites.push(fs);
+			
+			
+			step_macColumns.maximum = sprites.length;
+			step_macColumns.value = Math.ceil(sprites.length / 2);
 		}
 		
 		
