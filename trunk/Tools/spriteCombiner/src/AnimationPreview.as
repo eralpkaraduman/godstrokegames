@@ -3,6 +3,7 @@ package
 	import adobe.utils.CustomActions;
 	import com.bit101.components.CheckBox;
 	import com.bit101.components.InputText;
+	import com.bit101.components.Knob;
 	import com.bit101.components.Label;
 	import com.bit101.components.List;
 	import com.bit101.components.ListItem;
@@ -62,6 +63,7 @@ package
 		private var animationBuffer:Bitmap;
 		private var bufferBMP:BitmapData;
 		private var bufferSpriteIndex:int = 0;
+		private var fpsKnob:Knob;
 		private function oef(e:Event):void 
 		{
 			if (win().minimized) return;
@@ -153,7 +155,7 @@ package
 			list.autoHideScrollBar = true;
 			list.alternateRows = true;
 			list.width = 33;
-			list.height = 100;
+			list.height = 130;
 			
 			var btn_remove:PushButton = new PushButton(this, list.x + list.width + 5, list.y, "Remove",onRemove);
 			btn_remove.width = 52;
@@ -166,6 +168,14 @@ package
 			panel.width = Main.sprites[0].loader.width;
 			panel.height = Main.sprites[0].loader.height;
 			bufferBMP = new BitmapData(Main.sprites[0].loader.width, Main.sprites[0].loader.height, true);
+			
+			
+			fpsKnob = new Knob(this, inputFR.x + 7, inputFR.height + 5 + inputFR.y, "FPS", onFpsKnob);
+			fpsKnob.value = fps;
+			fpsKnob.minimum = 1;
+			fpsKnob.maximum = stage.frameRate;
+			fpsKnob.labelPrecision = 0;
+			fpsKnob.mode = Knob.ROTATE;
 			//bufferBMP.lock();
 			//animationBuffer = new Bitmap(bufferBMP,PixelSnapping.NEVER,false);
 			animationBuffer = new Bitmap(bufferBMP);
@@ -178,6 +188,12 @@ package
 			
 			win().height = (lscl > pncl)? lscl : pncl;
 			
+		}
+		
+		private function onFpsKnob(e:Event):void 
+		{
+			fps = fpsKnob.value;
+			//trace(fpsKnob.value);
 		}
 		
 		private function onFRInpChanged(e:Event):void 
