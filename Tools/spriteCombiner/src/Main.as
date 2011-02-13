@@ -37,6 +37,11 @@ package
 		private var loadBtn:PushButton;
 		private var btn_orderByCurX:PushButton;
 		private var btn_defineNewAnim:PushButton;
+		private var closedWinsCount:int = 0;
+		private var last_vr:int = 0;
+		
+		public var animations:Vector.<Vector.<FrameSprite>> = new Vector.<Vector.<FrameSprite>>();
+		public var animationPreviews:Vector.<Window> = new Vector.<Window>();
 		
 		public function Main():void 
 		{
@@ -62,14 +67,15 @@ package
 			btn_defineNewAnim = new PushButton(state1, btn_orderByCurX.x + btn_orderByCurX.width+10, 0, "Define New Animation", onDefineNewAnim);
 			btn_orderByFN.enabled = false;
 			btn_orderByCurX.enabled = false;
-			
+			btn_defineNewAnim.enabled = false;
+			/*
 			var animsAccordeonWin:Window = new Window(state1, 400, 300, "Animations");
 			animsAccordeonWin.hasMinimizeButton = true;
-			//animsAccordeonWin. = true;
-			//var animsAccordeon:Accordion = new Accordion(state1)
+			*/
 			
-			addChild(state1);
 			addChild(spriteSheetDisplay);
+			addChild(state1);
+			
 			
 			spriteSheetDisplay.x = 20;
 			spriteSheetDisplay.y = 80;
@@ -82,13 +88,51 @@ package
 		private function onDefineNewAnim(e:MouseEvent):void 
 		{
 			
+			var mpl:int = (animationPreviews.length + 1);
+			
+			
+			/*var vr:int = (mpl / 8);
+			if (vr == 0);
+			
+			trace(vr);
+			var y_mul:int = 0;
+			if (vr == 0) {
+				y_mul = 0;
+			}else {
+				y_mul = ((mpl - closedWinsCount) * 20);
+			}*/
+			
+			var y_mul:int = 100 + Math.random() * (stage.stageHeight - 400);
+			var x_mul:int = 100 + Math.random() * (stage.stageWidth - 400);
+			
+			var animsAccordeonWin:Window = new Window(state1,x_mul, y_mul, "Animation" + (mpl));
+			animsAccordeonWin.hasCloseButton = true;
+			animsAccordeonWin.addEventListener(Event.CLOSE, onAnimClosed);
+			animsAccordeonWin.hasMinimizeButton = true;
+			var ap:AnimationPreview = new AnimationPreview();
+			animsAccordeonWin.content.addChild(ap);
+			animationPreviews.push(animsAccordeonWin);
+		}
+		
+		private function onAnimClosed(e:Event):void 
+		{
+			trace("close");
+			var t:Window = e.target as Window;
+			t.visible = false;
+			closedWinsCount++;
 		}
 		
 		private function onOrderByCurX(e:MouseEvent):void 
 		{
 			spriteContents.sort(fByCurX);
-			
 			ordering();
+		}
+		
+		private function onOrderByFileName(e:MouseEvent):void 
+		{
+			spriteContents.sort(fByFileName);
+			ordering();
+			
 		}
 		
 		private function fByCurX(_x:FrameSprite, _y:FrameSprite):Number {
@@ -104,13 +148,7 @@ package
 		}
 		
 		
-		private function onOrderByFileName(e:MouseEvent):void 
-		{
-			spriteContents.sort(fByFileName);
-			
-			ordering();
-			
-		}
+		
 		
 		private function ordering():void 
 		{
@@ -163,6 +201,7 @@ package
 		{
 			btn_orderByFN.enabled = true;
 			btn_orderByCurX.enabled = true;
+			btn_defineNewAnim.enabled = true;
 			
 			//trace("sel");
 			for each(file in files.fileList) {
