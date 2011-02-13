@@ -18,6 +18,7 @@ package
 	import flash.net.FileFilter;
 	import flash.net.FileReference;
 	import flash.net.FileReferenceList;
+	import com.greensock.TweenMax;
 	
 	/**
 	$(CBI)* ...
@@ -43,10 +44,15 @@ package
 		public var animations:Vector.<Vector.<FrameSprite>> = new Vector.<Vector.<FrameSprite>>();
 		public var animationPreviews:Vector.<Window> = new Vector.<Window>();
 		
+		
+		public static var sprites:Vector.<FrameSprite>;
+		
 		public function Main():void 
 		{
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init);
+			sprites = spriteContents;
+			
 		}
 		
 		private function init(e:Event = null):void 

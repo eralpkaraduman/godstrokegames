@@ -1,13 +1,19 @@
 package  
 {
+	import adobe.utils.CustomActions;
 	import com.bit101.components.CheckBox;
 	import com.bit101.components.InputText;
 	import com.bit101.components.Label;
+	import com.bit101.components.List;
+	import com.bit101.components.ListItem;
+	import com.bit101.components.NumericStepper;
 	import com.bit101.components.PushButton;
 	import com.bit101.components.WheelMenu;
 	import com.bit101.components.Window;
 	import flash.display.Sprite;
 	import flash.events.Event;
+	import flash.events.MouseEvent;
+	import flash.ui.Mouse;
 	
 	/**
 	$(CBI)* ...
@@ -29,6 +35,11 @@ package
 		var btn_ok:PushButton;
 		private var lbl_name:Label;
 		private var tf_name:InputText;
+		private var stepp:NumericStepper;
+		private var btn_add:PushButton;
+		private var itemsArray:Array;
+		private var list:List;
+		private var inputFR:InputText;
 		
 		public function AnimationPreview() 
 		{
@@ -38,8 +49,6 @@ package
 		
 		private function oats(e:Event):void 
 		{
-			
-			
 			org_title = win().title;
 			
 			removeEventListener(Event.ADDED_TO_STAGE, oats);
@@ -47,17 +56,113 @@ package
 			lbl_name.width = 30;
 			tf_name = new InputText(this, lbl_name.x + lbl_name.width, 5, win().title, nameChangeHandler);
 			tf_name.restrict = "a-zA-Z";
+			tf_name.width = 60;
 			frameCbxContainer.y = (tf_name.height + tf_name.y + 5);
 			frameCbxContainer.x = 5;
 			addChild(frameCbxContainer);
+			/*
+			var t_x:int = 0;
+			var t_y:int = 0;
+			var t_w:int = 30;
+			var t_h:int = 15;
 			
-			var toggle:CheckBox = new CheckBox(frameCbxContainer, 0, 0, "1", onFRCbx);
-			
+			for (var i:int = 0 ; i < Main.sprites.length ; i++ ) {
+				
+				
+				
+				var toggle:CheckBox = new CheckBox(frameCbxContainer, 0, 0, "1", onFRCbx);
+				toggle.width = t_w;
+				toggle.height = t_h;
+				
+			}
+			*/
+			frameCbxContainer.y = (tf_name.height + tf_name.y + 5);
+			frameCbxContainer.x = 5;
+			stepp = new NumericStepper(this,5,(tf_name.height + tf_name.y + 5),onStep);
+			stepp.width = 55;
+			stepp.maximum = Main.sprites.length - 1;
+			stepp.minimum = 0;
+			stepp.step = 1;
+			btn_add = new PushButton(this, stepp.x + stepp.width + 5, stepp.y, "Add", onAdd);
+			btn_add.width = 30
+			btn_add.height = 16;
 			/*
 			btn_ok = new PushButton(this, 0, 0, "OK");
 			btn_ok.width = 30;
 			*/
-			win().width = 280;
+			
+			itemsArray = new Array();
+			list = new List(this, 5, btn_add.y + btn_add.height + 5, itemsArray);
+			list.addEventListener(Event.SELECT, onListSelect);
+			list.autoHideScrollBar = true;
+			list.alternateRows = true;
+			list.width = 33;
+			
+			var btn_remove:PushButton = new PushButton(this, list.x + list.width + 5, list.y, "Remove",onRemove);
+			btn_remove.width = 52;
+			
+			inputFR = new InputText(this,btn_remove.x,btn_remove.y+btn_remove.height+5,"",onFRInpChanged)
+			inputFR.width = 52;
+			inputFR.restrict = "0-9";
+			
+			win().width = 200;
+			win().height = 200;
+		}
+		
+		private function onFRInpChanged(e:Event):void 
+		{
+			trace("cn")
+			
+			if (list.selectedItem) {
+				
+				var cur:String = inputFR.text;
+				var frn:Number = Number(cur);
+				
+				if (frn >= Main.sprites.length) frn = Main.sprites.length - 1;
+				if (frn < 0) frn = 0;
+				
+				
+				/*
+				itemsArray[list.selectedIndex].data = frn;
+				itemsArray[list.selectedIndex].label = frn + "";
+				*/
+				list.selectedItem.label = frn+"";
+				list.selectedItem.data = frn;
+				list.items = itemsArray;
+				
+				inputFR.text = list.selectedItem.data + "";
+				
+			}else {
+				inputFR.text = "";
+			}
+			//if(list.selectedItem)
+		}
+		
+		private function onRemove(e:MouseEvent):void 
+		{
+			if (list.selectedIndex > -1) {
+				list.removeItemAt(list.selectedIndex);
+			}
+		}
+		
+		private function onListSelect(e:Event):void 
+		{
+			if (list.selectedItem) {
+				Main.sprites[list.selectedItem.data].highLightRed();
+				inputFR.text = list.selectedItem.data + "";
+				
+			}
+		}
+		
+		private function onAdd(e:MouseEvent):void 
+		{
+			list.addItem( { label:stepp.value+"", data:stepp.value});
+		}
+		
+		private function onStep(e:Event):void
+		{
+			
+			Main.sprites[stepp.value].highLightRed();
 		}
 		
 		private function onFRCbx(e:Event):void {
