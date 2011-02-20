@@ -11,7 +11,6 @@ package
 	{
 		{[Embed(source = '../gfx/kipchak.png')]}private var kipchak_sprite:Class;
 		
-		
 		public function Player(_x:Number=0, _y:Number = 0) 
 		{
 			//loadGraphic(kipchak_sprite, true, true, 16, 16);
@@ -20,13 +19,16 @@ package
 			height = 11;
 			addAnimation("run", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 14,true);
 			addAnimation("idle", [0], 0,false);
-			addAnimation("jump", [13], 8,false);
+			addAnimation("jump", [13], 14,false);
 			
 		}
 		
 		override public function update():void {
+			//trace("---")
+			//trace(velocity.y);
 			handleUserInput();
-			
+			//trace(velocity.y);
+			//if (Math.abs(velocity.y) > 4) {
 			if (velocity.y != 0) {
 				play("jump");
 			}else {
@@ -36,9 +38,10 @@ package
 					play("run");
 				}
 			}
+			
 			super.update();
 			
-			
+			//trace(velocity.y);
 			
 			
 		}
