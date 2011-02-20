@@ -17,7 +17,6 @@ package
 		{
 			
 			
-			
 			super(240, 160, IntroState, 2);
 			
 		}

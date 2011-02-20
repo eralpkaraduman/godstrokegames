@@ -79,8 +79,6 @@ package
 			bgColor = 0x626c46;
 			FlxG.mouse.show();
 			
-			
-			
 		}
 		
 		private function onTFmou(e:MouseEvent):void 
@@ -100,81 +98,26 @@ package
 				startButton.visible = false;
 				FlxG.stage.removeChild(textField);
 				gfx_enter_name_spr.visible = false;
-				connect();
-				
-				
+				Registry.player_name = textField.text;
+				FlxG.state = new ConnectionState();
 				
 			}
 			
 		}
 		
-		private function connect():void 
-		{
-			FlxG.log("connecting...");
-			
-			PlayerIO.connect(
-				FlxG.stage,
-				"nemmies-wxokm1sv0kw9hugssqau1a",
-				"public",
-				textField.text,
-				"",
-				onConnected,
-				onConnectionFailed
-			);
-		}
 		
-		private function onConnectionFailed(error:PlayerIOError):void 
-		{
-			FlxG.log("connection failed "+error.message);
-		}
 		
-		private function onConnected(client:Client):void 
-		{
-			FlxG.log("connected");
-			FlxG.log("joining...");
-			client.multiplayer.developmentServer = "88.242.230.12:8184";
-			client.multiplayer.createJoinRoom(
-				"test",
-				"Nemmies",
-				true,
-				{},
-				{},
-				onJoin,
-				onJoinError
-			)
-			//FlxG.state = new PlayState();
-		}
 		
-		private function onJoinError(error:PlayerIOError):void 
-		{
-			FlxG.log("join failed "+error.message);
-		}
 		
-		private function onJoin(connection:Connection):void 
-		{
-			FlxG.log("joined");
-			connection.addDisconnectHandler(onDisconnect);
-			connection.addMessageHandler("hello", function(m:Message) {
-				FlxG.log("Server:Hello");
-			})
-			connection.addMessageHandler("UserJoined", function(m:Message, userid:uint){
-				FlxG.log("Player with the userid "+userid+" just joined the room");
-			})
-			connection.addMessageHandler("UserLeft", function(m:Message, userid:uint){
-				FlxG.log("Player with the userid "+userid+" just left the room");
-			})
-			connection.addMessageHandler("*", handleMessages)
-		}
 		
-		private function handleMessages(m:Message):void 
-		{
-			FlxG.log("Server:" + m);
-		}
 		
-		private function onDisconnect():void 
-		{
-			FlxG.log("disconnected from server");
-		}
+		
+		
+		
+		
+		
+		
+		
 		
 	}
 
