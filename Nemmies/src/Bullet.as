@@ -22,6 +22,7 @@ package
 			
 			retired = false;
 			dead = false;
+			solid = true;
 			visible = true;
 			this.x = shooter.x + ((shooter.facing == LEFT) ? 0 : shooter.width);
 			this.y = shooter.y + 2;
@@ -63,7 +64,8 @@ package
 			retired = true;
 			dead = true;
 			visible = false;
-			velocity = 0;
+			solid = false;
+			this.velocity.x = 0;
 		}
 		
 		
