@@ -14,9 +14,14 @@ package
 		{
 			super(_x,_y);
 			loadGraphic(crate_gfx, false, true, 8, 8);
-			
-			acceleration.y = 160;
-			drag.x = 50;
+			width = 8;
+			height = 8;
+			maxVelocity.x = 80;
+			maxVelocity.y = 200;
+			acceleration.y = 200;
+			drag.x = maxVelocity.x;
+			//acceleration.y = 160;
+			//drag.x = 50;
 		}
 		
 	}
