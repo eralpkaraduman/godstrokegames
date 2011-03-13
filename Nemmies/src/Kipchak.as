@@ -11,7 +11,7 @@ package
 	$(CBI)*/
 	public class Kipchak extends FlxSprite 
 	{
-		static private const MAX_VEL_X_NORMAL:Number = 80;
+		static private const MAX_VEL_X_NORMAL:Number = 65;
 		static private const MAX_VEL_X_CROUCH:Number = 15;
 		public var crouch:Boolean = false;
 		protected var _attack_counter:Number = 0;
@@ -40,7 +40,16 @@ package
 				_attack_counter = -FlxG.elapsed * 3;
 			}
 			
-			crouch = FlxG.keys.DOWN;
+			
+			if (onFloor) {
+				crouch = FlxG.keys.DOWN;
+			}else {
+				crouch = false;
+			}
+			//crouch = (FlxG.keys.DOWN && !onFloor);
+			
+			
+			
 			if (crouch) {
 				maxVelocity.x = MAX_VEL_X_CROUCH;
 			}else {
