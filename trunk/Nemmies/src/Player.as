@@ -47,22 +47,18 @@ package
 		}
 		
 		override public function update():void {
-			//trace("---")
-			//trace(velocity.y);
+			
 			handleUserInput();
-			//trace(velocity.y);
-			//if (Math.abs(velocity.y) > 4) {
 			
-			
-			
-			//if (velocity.y != 0) {
 			if (!onFloor) {
 				play("jump"); /*trace("60");*/
 				jump_complete = false;
 				in_air_time += FlxG.elapsed;
 				crouch_up_complete = true;
-			}else {
 				
+				
+				
+			}else {
 				
 				if (!jump_complete) {
 					
@@ -72,11 +68,8 @@ package
 					}
 				}
 				
-				
-				
 				if (crouch) {
 					if (!crouched_down) {
-						//trace("crouch_down");
 						crouch_down_complete = false;
 						play("crouch_down",true); /*trace("91");*/
 						crouched_down = true;
@@ -91,34 +84,30 @@ package
 					
 				}else if(!crouch){
 					if (!crouched_up) {
-						//trace("crouch_up");
 						crouch_up_complete = false;
 						play("crouch_up",true); /*trace("99");*/
 						crouched_up = true;
 						crouched_down = false;
-					
-					//////////////////////////////	71 - 126
-						
 					}else {
 						if (velocity.x == 0) {
 							if(crouch_up_complete)play("idle"); /*trace("107");*/
 						}else {
-							
 							play("run"); /*trace("110");*/
-							
 							crouch_up_complete = true;
 						}
 					}
 					
-					///////////////////////////////
-					
-					
-					jump_complete = true;
-					in_air_time = 0;
 				}
+				
+				jump_complete = true;
+				in_air_time = 0;
 			}
 			
-			
+			// fixes
+			if (crouch && onFloor && velocity.x != 0) {
+				crouch_down_complete = true;
+				crouch_up_complete = true;
+			}
 			
 			super.update();
 			
