@@ -14,6 +14,8 @@ package
 		private var crouched_down:Boolean = false;
 		private var crouched_up:Boolean = true;
 		private var crouch_up_complete:Boolean = true;
+		private var jump_complete:Boolean = true;
+		private var in_air_time:Number = 0;
 		
 		public function Player(_x:Number=0, _y:Number = 0) 
 		{
@@ -46,11 +48,29 @@ package
 			//trace(velocity.y);
 			//if (Math.abs(velocity.y) > 4) {
 			
+			
+			
 			//if (velocity.y != 0) {
 			if (!onFloor) {
 				play("jump");
+				jump_complete = false;
+				in_air_time += FlxG.elapsed;
 				crouch_up_complete = true;
 			}else {
+				
+				
+				if (!jump_complete) {
+					trace("yes");
+					
+					if (in_air_time>0.6) {
+						crouch_up_complete = false;
+						play("crouch_up", true);
+					}
+						
+					
+					
+				}
+				
 				/*
 				if (FlxG.keys.justPressed("DOWN")) {
 					//crouch = true;
@@ -91,6 +111,9 @@ package
 					
 					///////////////////////////////
 					
+					
+					jump_complete = true;
+					in_air_time = 0;
 				}
 			}
 			
