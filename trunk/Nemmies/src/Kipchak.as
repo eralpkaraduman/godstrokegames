@@ -11,6 +11,8 @@ package
 	$(CBI)*/
 	public class Kipchak extends FlxSprite 
 	{
+		static private const MAX_VEL_X_NORMAL:Number = 80;
+		static private const MAX_VEL_X_CROUCH:Number = 15;
 		public var crouch:Boolean = false;
 		protected var _attack_counter:Number = 0;
 		protected var bulletsInGame:Array = new Array();
@@ -22,7 +24,7 @@ package
 			if (!rect) rect = new Rectangle(0, 0, 16, 16);
 			
 			loadGraphic(_gfx, true, true, rect.width, rect.height);
-			maxVelocity.x = 80;
+			maxVelocity.x = MAX_VEL_X_NORMAL;
 			maxVelocity.y = 200;
 			acceleration.y = 200;
 			drag.x = maxVelocity.x * 4;
@@ -32,11 +34,18 @@ package
 		
 		protected function handleUserInput():void {
 			
+			
+			
 			if (_attack_counter > 0) {
 				_attack_counter = -FlxG.elapsed * 3;
 			}
 			
 			crouch = FlxG.keys.DOWN;
+			if (crouch) {
+				maxVelocity.x = MAX_VEL_X_CROUCH;
+			}else {
+				maxVelocity.x = MAX_VEL_X_NORMAL;
+			}
 			
 			if (FlxG.keys.justPressed("C") && _attack_counter <= 0 && !crouch) {
 				shoot(facing,x,y);
@@ -45,11 +54,11 @@ package
 			
 			
 			acceleration.x = 0;
-			if (FlxG.keys.LEFT && !crouch) {
+			if (FlxG.keys.LEFT ) {
 				facing = LEFT;
 				acceleration.x = -maxVelocity.x * 4;
 				
-			}else if (FlxG.keys.RIGHT && !crouch) {
+			}else if (FlxG.keys.RIGHT ) {
 				facing = RIGHT;
 				acceleration.x = maxVelocity.x * 4;
 			}
