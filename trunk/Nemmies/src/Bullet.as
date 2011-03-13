@@ -19,14 +19,14 @@ package
 			createGraphic(1, 1, color);
 		}
 		
-		public function go(shooter:FlxSprite):void {
+		public function go(shooter:Kipchak):void {
 			
 			retired = false;
 			dead = false;
 			solid = true;
 			visible = true;
-			this.x = shooter.x + ((shooter.facing == LEFT) ? -5 : shooter.width+1);
-			this.y = shooter.y + 2;
+			this.x = shooter.x + ((shooter.facing == LEFT) ? -5 : shooter.width+2);
+			this.y = shooter.y + 2 + ((shooter.crouch) ? 3 : 0);
 			velocity.x = BULLET_SPEED * ((shooter.facing == LEFT) ? -1 : 1);
 			
 		}
