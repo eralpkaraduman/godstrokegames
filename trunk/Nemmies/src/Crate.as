@@ -1,5 +1,6 @@
 package  
 {
+	import org.flixel.FlxObject;
 	import org.flixel.FlxSprite;
 	
 	/**
@@ -16,13 +17,18 @@ package
 			loadGraphic(crate_gfx, false, true, 8, 8);
 			width = 8;
 			height = 8;
-			maxVelocity.x = 80;
-			maxVelocity.y = 200;
-			acceleration.y = 200;
-			drag.x = maxVelocity.x;
+			maxVelocity.x = 10;
+			maxVelocity.y = 30;
+			acceleration.y = 300;
+			drag.x = maxVelocity.x*4;
+			//fixed = false;
+			//solid = true;
 			//acceleration.y = 160;
 			//drag.x = 50;
+			//dead = true;
 		}
+		
+		
 		
 	}
 

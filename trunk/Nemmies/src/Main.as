@@ -10,7 +10,7 @@ package
 	*/
 	public class Main extends FlxGame 
 	{
-		[SWF(width="480", height="320", backgroundColor="0x626c46",frameRate="32")]
+		[SWF(width="480", height="320", backgroundColor="0x626c46",frameRate="12")]
 		[Frame(factoryClass="Preloader")]
 		
 		public function Main():void 
@@ -19,6 +19,7 @@ package
 			
 			super(240, 160, IntroState, 2);
 			
+			useDefaultHotKeys = false;
 		}
 		
 	}
