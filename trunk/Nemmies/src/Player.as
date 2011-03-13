@@ -57,7 +57,7 @@ package
 			
 			//if (velocity.y != 0) {
 			if (!onFloor) {
-				play("jump");
+				play("jump"); /*trace("60");*/
 				jump_complete = false;
 				in_air_time += FlxG.elapsed;
 				crouch_up_complete = true;
@@ -65,50 +65,46 @@ package
 				
 				
 				if (!jump_complete) {
-					trace("yes");
 					
-					if (in_air_time>0.6) {
+					if (in_air_time>0.6 &&!crouch) {
 						crouch_up_complete = false;
-						play("crouch_up", true);
+						play("crouch_up", true); /*trace("71");*/
 					}
 				}
 				
-				/*
-				if (FlxG.keys.justPressed("DOWN")) {
-					//crouch = true;
-					trace("crouch down");
-				}else if (FlxG.keys.justReleased("DOWN")) {
-					trace("crouch up");
-					//crouch = false;
-				}
-				if (!FlxG.keys.DOWN) {
-					crouch = false;
-				}*/
+				
 				
 				if (crouch) {
 					if (!crouched_down) {
 						//trace("crouch_down");
 						crouch_down_complete = false;
-						play("crouch_down",true);
+						play("crouch_down",true); /*trace("91");*/
 						crouched_down = true;
 						crouched_up = false;
 					}
+					
+					if (velocity.x != 0) {
+						play("crouch_walk"); /*trace("126");*/
+					}else {
+						if(crouch_down_complete)play("crouch_idle"); /*trace("128");*/
+					}
+					
 				}else if(!crouch){
 					if (!crouched_up) {
 						//trace("crouch_up");
 						crouch_up_complete = false;
-						play("crouch_up",true);
+						play("crouch_up",true); /*trace("99");*/
 						crouched_up = true;
 						crouched_down = false;
 					
-					//////////////////////////////	
+					//////////////////////////////	71 - 126
 						
 					}else {
 						if (velocity.x == 0) {
-							if(crouch_up_complete)play("idle");
+							if(crouch_up_complete)play("idle"); /*trace("107");*/
 						}else {
 							
-							play("run");
+							play("run"); /*trace("110");*/
 							
 							crouch_up_complete = true;
 						}
@@ -122,13 +118,7 @@ package
 				}
 			}
 			
-			if (onFloor && crouch) {
-				if (velocity.x != 0) {
-					play("crouch_walk");
-				}else {
-					if(crouch_down_complete)play("crouch_idle");
-				}
-			}
+			
 			
 			super.update();
 			
