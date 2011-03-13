@@ -10,12 +10,13 @@ package
 	$(CBI)*/
 	public class Player extends Kipchak 
 	{
-		{[Embed(source = '../gfx/spriteSheet_wCrouch.png')]}private var kipchak_sprite:Class;
+		{[Embed(source = '../gfx/spriteSheet_wCrouchWalk.png')]}private var kipchak_sprite:Class;
 		private var crouched_down:Boolean = false;
 		private var crouched_up:Boolean = true;
 		private var crouch_up_complete:Boolean = true;
 		private var jump_complete:Boolean = true;
 		private var in_air_time:Number = 0;
+		private var crouch_down_complete:Boolean = true;
 		
 		public function Player(_x:Number=0, _y:Number = 0) 
 		{
@@ -28,6 +29,8 @@ package
 			addAnimation("jump", [13], 14, false);
 			addAnimation("crouch_down", [0,14,15,16], 14, false);
 			addAnimation("crouch_up", [16, 15, 14, 0], 14, false);
+			addAnimation("crouch_walk", [16, 17, 18, 19], 6, true);
+			addAnimation("crouch_idle", [16],14 ,false);
 			
 			addAnimationCallback(animCallBack);
 			
@@ -38,6 +41,8 @@ package
 		{
 			if (name == "crouch_up" && fr_id == 0) {
 				crouch_up_complete = true;
+			}else if (name == "crouch_down" && fr_id==16) {
+				crouch_down_complete = true;
 			}
 		}
 		
@@ -66,9 +71,6 @@ package
 						crouch_up_complete = false;
 						play("crouch_up", true);
 					}
-						
-					
-					
 				}
 				
 				/*
@@ -86,6 +88,7 @@ package
 				if (crouch) {
 					if (!crouched_down) {
 						//trace("crouch_down");
+						crouch_down_complete = false;
 						play("crouch_down",true);
 						crouched_down = true;
 						crouched_up = false;
@@ -104,7 +107,9 @@ package
 						if (velocity.x == 0) {
 							if(crouch_up_complete)play("idle");
 						}else {
+							
 							play("run");
+							
 							crouch_up_complete = true;
 						}
 					}
@@ -114,6 +119,14 @@ package
 					
 					jump_complete = true;
 					in_air_time = 0;
+				}
+			}
+			
+			if (onFloor && crouch) {
+				if (velocity.x != 0) {
+					play("crouch_walk");
+				}else {
+					if(crouch_down_complete)play("crouch_idle");
 				}
 			}
 			
