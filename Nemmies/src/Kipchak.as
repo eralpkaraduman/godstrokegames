@@ -15,7 +15,7 @@ package
 	$(CBI)*/
 	public class Kipchak extends FlxSprite 
 	{
-		static private const MAX_VEL_X_NORMAL:Number = 65;
+		static private const MAX_VEL_X_NORMAL:Number = 40;
 		static private const MAX_VEL_X_CROUCH:Number = 15;
 		private var _rectC:FlxRect;
 		private var canCrouchUp:Boolean = true;
@@ -85,7 +85,6 @@ package
 			}
 			
 			if (crouchWas && !canWalk) {
-				trace("dsagsahgash5");
 				crouch = true;
 				//canWalk = true;
 			}
@@ -99,7 +98,7 @@ package
 				maxVelocity.x = MAX_VEL_X_NORMAL;
 			}
 			
-			if (FlxG.keys.justPressed("SPACE") && _attack_counter <= 0 /*&& !crouch*/) {
+			if (FlxG.keys.justPressed("C") && _attack_counter <= 0 /*&& !crouch*/) {
 				shoot(facing,x,y);
 			}
 			
@@ -114,7 +113,7 @@ package
 				facing = RIGHT;
 				acceleration.x = maxVelocity.x * 4;
 			}
-			if (FlxG.keys.UP && onFloor) {
+			if ( (FlxG.keys.justPressed("X")|| FlxG.keys.justPressed("UP"))  && onFloor) {
 				velocity.y = -maxVelocity.y / 2;
 				crouch = false;
 			}
