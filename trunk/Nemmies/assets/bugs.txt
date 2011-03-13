@@ -1,1 +1,16 @@
-- isim yazma fieldine p girince oyunun pause olması
+Multiplayerden önce yapılacaklar
+
+- zıplarken elin aşağıda gibi kalması ama ileri doğru ateş edilebilmesi saçma, ya animasyonu tamamlayıp, elin yere paralel olduğu bi framele bitirmeliyim ya da zıplarlen ateş etmeyi kaldırmalıyım
+- sadece eğilerek girilebilen tünllerde ayağı kalkılabiliyor, 3 4 px de hareket edilebiliyor, hata gibi görünüyor çözmek lazım
+- map grafikleri çizmek lazım
+- arka plana böyle kırmızı kaotik bi görsel, pralax
+- tilemaplar da böyle paslı kanlı demir gibi
+- yardır bi müzik
+- turretler
+- title ekranı lazım
+- random spawn pointler (onlect layout pngsinden belirlenebilir şekilde yapmıştım zaten)
+
+
+Bunlar tamam :
+
+- isim yazma fieldine p girince oyunun pause olması - OK

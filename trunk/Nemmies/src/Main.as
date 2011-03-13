@@ -10,7 +10,7 @@ package
 	*/
 	public class Main extends FlxGame 
 	{
-		[SWF(width="480", height="320", backgroundColor="0x626c46",frameRate="12")]
+		[SWF(width="480", height="320", backgroundColor="0x626c46",frameRate="60")]
 		[Frame(factoryClass="Preloader")]
 		
 		public function Main():void 
