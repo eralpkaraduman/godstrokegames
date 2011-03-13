@@ -1,9 +1,13 @@
 package  
 {
+	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import org.flixel.FlxG;
+	import org.flixel.FlxObject;
 	import org.flixel.FlxPoint;
+	import org.flixel.FlxRect;
 	import org.flixel.FlxSprite;
+	import org.flixel.FlxTilemap;
 	
 	/**
 	$(CBI)* ...
@@ -13,40 +17,79 @@ package
 	{
 		static private const MAX_VEL_X_NORMAL:Number = 65;
 		static private const MAX_VEL_X_CROUCH:Number = 15;
+		private var _rectC:FlxRect;
+		private var canCrouchUp:Boolean = true;
+		protected var canWalk:Boolean = true;
 		public var crouch:Boolean = false;
 		protected var _attack_counter:Number = 0;
 		protected var bulletsInGame:Array = new Array();
+		protected var tileMap:FlxTilemap;
 		
-		public function Kipchak(_gfx:Class,_x:Number=0, _y:Number = 0,rect:Rectangle=null) 
+		public function Kipchak(_gfx:Class,_x:Number=0, _y:Number = 0,rectC:FlxRect=null,spriteWH:Point=null) 
 		{
 			super(_x, _y);
+			_rectC = rectC;
 			
-			if (!rect) rect = new Rectangle(0, 0, 16, 16);
+			if (!spriteWH) spriteWH = new Point(16, 16);
 			
-			loadGraphic(_gfx, true, true, rect.width, rect.height);
+			loadGraphic(_gfx, true, true, spriteWH.x, spriteWH.y);
 			maxVelocity.x = MAX_VEL_X_NORMAL;
 			maxVelocity.y = 200;
 			acceleration.y = 200;
 			drag.x = maxVelocity.x * 4;
-			offset = new FlxPoint(rect.x, rect.y);
+			
+			//offset = new FlxPoint(rectC.x, rectC.y);
+			//width = rectC
+			updateRect(_rectC,true);
+			
+		}
+		
+		protected function updateRect(rect:FlxRect,firsttime:Boolean = false):void {
+			
+			if (firsttime) {
+				offset.x = rect.x;
+				offset.y = rect.y;
+				width = rect.width;
+				height = rect.height;
+				return;
+			}
+				
+			//_rect = new FlxRect(rect.x, rect.y, rect.width, rect.height);
+			
+			
+			if (rect.x != _rectC.x) offset.x = rect.x;
+			if (rect.y != _rectC.y) offset.y = rect.y;
+			if (rect.width != _rectC.width) width = rect.width;
+			if(rect.height != _rectC.height) height = rect.height;
+			
+			_rectC = rect;
+			
 			
 		}
 		
 		protected function handleUserInput():void {
-			
-			
 			
 			if (_attack_counter > 0) {
 				_attack_counter = -FlxG.elapsed * 3;
 			}
 			
 			
+			
+			// crouch? ///////////////////////////
+			var crouchWas:Boolean = crouch;
+			
 			if (onFloor) {
 				crouch = FlxG.keys.DOWN;
 			}else {
 				crouch = false;
 			}
-			//crouch = (FlxG.keys.DOWN && !onFloor);
+			
+			if (crouchWas && !canWalk) {
+				trace("dsagsahgash5");
+				crouch = true;
+				//canWalk = true;
+			}
+			///////////////////////////////////////
 			
 			
 			
@@ -56,25 +99,26 @@ package
 				maxVelocity.x = MAX_VEL_X_NORMAL;
 			}
 			
-			if (FlxG.keys.justPressed("C") && _attack_counter <= 0 && !crouch) {
+			if (FlxG.keys.justPressed("SPACE") && _attack_counter <= 0 /*&& !crouch*/) {
 				shoot(facing,x,y);
 			}
 			
 			
 			
 			acceleration.x = 0;
-			if (FlxG.keys.LEFT ) {
+			if (FlxG.keys.LEFT) {
 				facing = LEFT;
 				acceleration.x = -maxVelocity.x * 4;
 				
-			}else if (FlxG.keys.RIGHT ) {
+			}else if (FlxG.keys.RIGHT) {
 				facing = RIGHT;
 				acceleration.x = maxVelocity.x * 4;
 			}
-			if (FlxG.keys.X && onFloor) {
+			if (FlxG.keys.UP && onFloor) {
 				velocity.y = -maxVelocity.y / 2;
 				crouch = false;
 			}
+			
 			
 			
 		}
@@ -126,6 +170,8 @@ package
 			b2go.go(this);
 			//trace("pew " + bulletsInGame.length);
 		}
+		
+		
 		
 		
 		

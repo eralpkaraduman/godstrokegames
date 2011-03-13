@@ -4,6 +4,9 @@ package
 	import flash.ui.Keyboard;
 	import org.flixel.FlxG;
 	import org.flixel.FlxObject;
+	import org.flixel.FlxRect;
+	import org.flixel.FlxTilemap;
+	import org.flixel.FlxU;
 	/**
 	$(CBI)* ...
 	$(CBI)* @author GodStroke
@@ -17,14 +20,16 @@ package
 		private var jump_complete:Boolean = true;
 		private var in_air_time:Number = 0;
 		private var crouch_down_complete:Boolean = true;
+		private var justCrouched:Boolean = false;
 		
-		public function Player(_x:Number=0, _y:Number = 0) 
+		public function Player(_x:Number, _y:Number,map:FlxTilemap) 
 		{
 			//loadGraphic(kipchak_sprite, true, true, 16, 16);
-			super(kipchak_sprite, _x, _y, new Rectangle(5, 5, 16, 16));
-			width = 6;
-			height = 11;
-			addAnimation("run", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 14,true);
+			tileMap = map;
+			super(kipchak_sprite, _x, _y, new FlxRect(5, 5, 6, 11));
+			//width = 6;
+			//height = 11;
+			addAnimation("run", [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 12,true);
 			addAnimation("idle", [0], 14,false);
 			addAnimation("jump", [13], 14, false);
 			addAnimation("crouch_down", [0,14,15,16], 14, false);
@@ -33,8 +38,6 @@ package
 			addAnimation("crouch_idle", [16],14 ,false);
 			
 			addAnimationCallback(animCallBack);
-			
-			
 		}
 		
 		private function animCallBack(name:String,fr:uint,fr_id:uint):void 
@@ -48,7 +51,15 @@ package
 		
 		override public function update():void {
 			
+			if (justCrouched) {
+				y -= 3;
+				justCrouched = false;
+			}
+			
+			
 			handleUserInput();
+			
+			
 			
 			if (!onFloor) {
 				play("jump"); /*trace("60");*/
@@ -82,6 +93,8 @@ package
 						if(crouch_down_complete)play("crouch_idle"); /*trace("128");*/
 					}
 					
+					
+					
 				}else if(!crouch){
 					if (!crouched_up) {
 						crouch_up_complete = false;
@@ -103,16 +116,34 @@ package
 				in_air_time = 0;
 			}
 			
+			
 			// fixes
+			
+			if (crouch) {
+				y += 3; justCrouched = true;
+				updateRect(new FlxRect(5, 8, 6, 8));
+			}else {
+				updateRect(new FlxRect(5, 5, 6, 11));
+				preCollide(tileMap);
+			}
+			
+			
 			if (crouch && onFloor && velocity.x != 0) {
 				crouch_down_complete = true;
 				crouch_up_complete = true;
 			}
 			
+			
+			
+			//
 			super.update();
 			
-			//trace(velocity.y);
+			
+			
+			
 		}
+		
+		
 		
 		
 		

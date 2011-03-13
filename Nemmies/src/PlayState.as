@@ -4,6 +4,7 @@ package
 	import flash.geom.Point;
 	import org.flixel.FlxG;
 	import org.flixel.FlxGroup;
+	import org.flixel.FlxObject;
 	import org.flixel.FlxState;
 	import org.flixel.FlxTilemap;
 	import org.flixel.FlxU;
@@ -36,7 +37,12 @@ package
 			
 			crateGroup = new FlxGroup();
 			var crateKey:uint = 0xffba00;
+			var spawnPointKey:uint = 0xFF00E1;
+			
 			var cratePosArray:Array = PNGTileMap.parse(gfx_testMap, crateKey, new Point(level.width, level.height),new Point(8,8));
+			
+			var spawnPointPosArray:Array = PNGTileMap.parse(gfx_testMap, spawnPointKey, new Point(level.width, level.height),new Point(8,8));
+			
 			for (var i:uint = 0; i < cratePosArray.length ; i++ ) {
 				var pn:Point = cratePosArray[i];
 				var crate:Crate = new Crate(pn.x, pn.y);
@@ -44,9 +50,15 @@ package
 			}
 			add(crateGroup);
 			
-			player = new Player();
-			player.x = 15;
-			player.y = 15;
+			var spawnPoint:Point = spawnPointPosArray[0];
+			//trace("a",spawnPoint);
+			//trace("b",spawnPointPosArray);
+			
+			if (!spawnPoint) spawnPoint = new Point(15, 15);
+			
+			player = new Player(0,0,level);
+			player.x = spawnPoint.x;
+			player.y = spawnPoint.y;
 			add(player);
 			//playerNames[]
 			
@@ -58,19 +70,21 @@ package
 		
 		override public function update():void {
 			
+			
+			
 			FlxU.collide(player, crateGroup);
 			FlxU.collide(crateGroup,level);
 			FlxU.collide(level, player);
+			
+			
 			super.update();
-			
-			
-			
 			
 			//collide();
 			
 			
 			//collide();
 		}
+		
 		
 	}
 	
