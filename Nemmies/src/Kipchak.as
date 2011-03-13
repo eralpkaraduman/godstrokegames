@@ -11,6 +11,7 @@ package
 	$(CBI)*/
 	public class Kipchak extends FlxSprite 
 	{
+		public var crouch:Boolean = false;
 		protected var _attack_counter:Number = 0;
 		protected var bulletsInGame:Array = new Array();
 		
@@ -35,36 +36,43 @@ package
 				_attack_counter = -FlxG.elapsed * 3;
 			}
 			
-			if (FlxG.keys.justPressed("C") && _attack_counter <= 0) {
+			crouch = FlxG.keys.DOWN;
+			
+			if (FlxG.keys.justPressed("C") && _attack_counter <= 0 && !crouch) {
 				shoot(facing,x,y);
 			}
 			
+			
+			
 			acceleration.x = 0;
-			if (FlxG.keys.LEFT) {
+			if (FlxG.keys.LEFT && !crouch) {
 				facing = LEFT;
 				acceleration.x = -maxVelocity.x * 4;
 				
-			}else if (FlxG.keys.RIGHT) {
+			}else if (FlxG.keys.RIGHT && !crouch) {
 				facing = RIGHT;
 				acceleration.x = maxVelocity.x * 4;
 			}
 			if (FlxG.keys.X && onFloor) {
 				velocity.y = -maxVelocity.y / 2;
+				crouch = false;
 			}
+			
+			
 		}
 		
-		protected function handleServerInput(input:ServerInput):void {
+		protected function handleServerInput(input:ServerInput):void { // re-do this
 			/*
 			if (_attack_counter > 0) {
 				_attack_counter = -FlxG.elapsed * 3;
 			}*/
 			
-			if (input.SHOOT) {
+			if (input.SHOOT && ! crouch) {
 				shoot(facing,x,y);
 			}
 			
 			acceleration.x = 0;
-			if (input.MOVING_LEFT) {
+			if (input.MOVING_LEFT ) {
 				facing = LEFT;
 				acceleration.x = -maxVelocity.x * 4;
 				
@@ -72,9 +80,11 @@ package
 				facing = RIGHT;
 				acceleration.x = maxVelocity.x * 4;
 			}
-			if (input.MOVING_RIGHT) {
+			
+			if (input.JUMP) {
 				velocity.y = -maxVelocity.y / 2;
 			}
+			
 		}
 		
 		private function shoot(facing:uint, x:Number, y:Number):void 
@@ -96,7 +106,7 @@ package
 			}
 			
 			b2go.go(this);
-			trace("pew " + bulletsInGame.length);
+			//trace("pew " + bulletsInGame.length);
 		}
 		
 		

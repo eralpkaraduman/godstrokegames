@@ -5,7 +5,7 @@
     <movie disabled="False" />
     <movie input="" />
     <movie path="bin\Nemmies.swf" />
-    <movie fps="32" />
+    <movie fps="12" />
     <movie width="480" />
     <movie height="320" />
     <movie version="10" />

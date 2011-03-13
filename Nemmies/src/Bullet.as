@@ -10,6 +10,7 @@ package
 	$(CBI)*/
 	public class Bullet extends FlxSprite 
 	{
+		static private const BULLET_SPEED:Number = 150;
 		public var retired:Boolean = false;
 		
 		public function Bullet(_x:Number=0, _y:Number=0,color:uint=0xff000000) 
@@ -24,9 +25,9 @@ package
 			dead = false;
 			solid = true;
 			visible = true;
-			this.x = shooter.x + ((shooter.facing == LEFT) ? 0 : shooter.width);
+			this.x = shooter.x + ((shooter.facing == LEFT) ? -5 : shooter.width+1);
 			this.y = shooter.y + 2;
-			velocity.x = 200 * ((shooter.facing == LEFT) ? -1 : 1);
+			velocity.x = BULLET_SPEED * ((shooter.facing == LEFT) ? -1 : 1);
 			
 		}
 		

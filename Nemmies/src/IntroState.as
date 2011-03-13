@@ -38,6 +38,7 @@ package
 		
 		override public function create():void {
 			
+			
 			gfx_enter_name_spr = new FlxSprite(0, 0, gfx_enter_name);
 			gfx_enter_name_spr.x = FlxG.width / 2 - gfx_enter_name_spr.width / 2;
 			gfx_enter_name_spr.y = 37;
@@ -70,7 +71,7 @@ package
 			textField.height = textField.height * 2;*/
 			
 			textField.type = TextFieldType.INPUT;
-			textField.text = ""
+			textField.text = "Aukyr";
 			textField.addEventListener(MouseEvent.MOUSE_OVER, onTFmov);
 			textField.addEventListener(MouseEvent.MOUSE_OUT, onTFmou);
 			FlxG.stage.addChild(textField);
@@ -79,6 +80,14 @@ package
 			bgColor = 0x626c46;
 			FlxG.mouse.show();
 			
+		}
+		
+		override public function update():void {
+			super.update();
+			
+			if (FlxG.keys.justReleased("ENTER")) {
+				onStartBTN();
+			}
 		}
 		
 		private function onTFmou(e:MouseEvent):void 
@@ -99,7 +108,9 @@ package
 				FlxG.stage.removeChild(textField);
 				gfx_enter_name_spr.visible = false;
 				Registry.player_name = textField.text;
-				FlxG.state = new ConnectionState();
+				
+				FlxG.state = new PlayState();
+				//FlxG.state = new ConnectionState();
 				
 			}
 			
