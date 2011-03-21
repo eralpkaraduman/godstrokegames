@@ -59,25 +59,28 @@ package
 			player = new Player(0,0,level);
 			player.x = spawnPoint.x;
 			player.y = spawnPoint.y;
-			add(player);
+			
 			//playerNames[]
+			//FlxG.framerate = 60;
 			
-			
-			FlxG.follow(player, 4);
-			FlxG.followAdjust(0, 0);
-			FlxG.followBounds(0, 0, level.width, level.height);
+			FlxG.follow(player, 10.5);
+			add(player);
+			//FlxG.followAdjust(0.5, 0.5);
+			//FlxG.followAdjust(0.5, 0.5);
+			FlxG.followBounds(1, 1, level.width-1, level.height-1);
+			//FlxG.followBounds(0, 0, level.width-0, level.height-0);
 		}
 		
 		override public function update():void {
-			
-			
-			
-			FlxU.collide(player, crateGroup);
-			FlxU.collide(crateGroup,level);
-			FlxU.collide(level, player);
-			
-			
 			super.update();
+			FlxU.collide(crateGroup, level);
+			FlxU.collide(level, player);
+			FlxU.collide(player, crateGroup);
+			
+			
+			
+			
+			
 			
 			//collide();
 			
