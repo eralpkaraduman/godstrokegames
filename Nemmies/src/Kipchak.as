@@ -15,7 +15,7 @@ package
 	$(CBI)*/
 	public class Kipchak extends FlxSprite 
 	{
-		static private const MAX_VEL_X_NORMAL:Number = 40;
+		static private const MAX_VEL_X_NORMAL:Number = 50;
 		static private const MAX_VEL_X_CROUCH:Number = 15;
 		private var _rectC:FlxRect;
 		private var canCrouchUp:Boolean = true;
@@ -34,13 +34,15 @@ package
 			
 			loadGraphic(_gfx, true, true, spriteWH.x, spriteWH.y);
 			maxVelocity.x = MAX_VEL_X_NORMAL;
-			maxVelocity.y = 200;
+			maxVelocity.y = 100;
 			acceleration.y = 200;
 			drag.x = maxVelocity.x * 4;
 			
 			//offset = new FlxPoint(rectC.x, rectC.y);
 			//width = rectC
-			updateRect(_rectC,true);
+			updateRect(_rectC, true);
+			
+			//fixed = true;
 			
 		}
 		
@@ -114,7 +116,7 @@ package
 				acceleration.x = maxVelocity.x * 4;
 			}
 			if ( (FlxG.keys.justPressed("X")|| FlxG.keys.justPressed("UP"))  && onFloor) {
-				velocity.y = -maxVelocity.y / 2;
+				velocity.y = -maxVelocity.y*3;
 				crouch = false;
 			}
 			
